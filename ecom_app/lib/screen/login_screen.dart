@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'dashboard_screen.dart';
+
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
@@ -49,9 +51,14 @@ class _LoginPageState extends State<LoginPage> {
           ElevatedButton(
             onPressed: () {
               print('Button pressed ${tcUsername.text} ${tcPassword.text}');
-              if (tcUsername.text == tcPassword.text)
+              if (tcUsername.text == tcPassword.text) {
                 print('Welcome ${tcUsername.text}');
-              else
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => DashboardScreen(),
+                  ),
+                );
+              } else
                 print('Invalid credentials');
             },
             child: Text('Login'),
