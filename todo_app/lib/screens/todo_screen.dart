@@ -9,6 +9,7 @@ class TodoScreen extends StatefulWidget {
 
 class _TodoScreenState extends State<TodoScreen> {
   List todos = [];
+  int selId = -1; //selected id incase of edit mode
   TextEditingController txtTitle = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -33,11 +34,26 @@ class _TodoScreenState extends State<TodoScreen> {
                 onPressed: () {
                   //logic to add/update items in todos
                   if (txtTitle.text.isNotEmpty) {
-                    todos.add({
-                      "id": todos.length + 1,
-                      'title': txtTitle.text,
-                      "isCompleted": false
-                    });
+                    if (selId == -1) {
+                      todos.add({
+                        "id": DateTime.now().microsecondsSinceEpoch,
+                        'title': txtTitle.text,
+                        "isCompleted": false
+                      });
+                    } else {
+                      int i =
+                          todos.indexWhere((element) => element['id'] == selId);
+                      if (i > -1) {
+                        var todo = todos[i];
+                        todos.removeAt(i);
+                        todos.insert(i, {
+                          "id": todo['id'],
+                          'title': txtTitle.text,
+                          "isCompleted": todo['isCompleted']
+                        });
+                      }
+                    }
+
                     txtTitle.clear();
                     setState(() {});
                   }
@@ -54,15 +70,31 @@ class _TodoScreenState extends State<TodoScreen> {
                 child: CheckboxListTile(
                     controlAffinity: ListTileControlAffinity.leading,
                     value: todos[index]['isCompleted'],
-                    onChanged: (v) {},
+                    onChanged: (v) {
+                      todos[index]['isCompleted'] = v;
+                      setState(() {});
+                    },
                     title: Text(
-                        '${todos[index]['title']} (${todos[index]['id']})'),
+                      '${todos[index]['title']} (${todos[index]['id']})',
+                      style: TextStyle(
+                          decoration: todos[index]['isCompleted']
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                          color: todos[index]['isCompleted']
+                              ? Colors.red
+                              : Colors.black),
+                    ),
                     secondary: SizedBox(
                       width: 80,
                       child: Row(
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              //logic to edit the data
+                              txtTitle.text = todos[index]['title'];
+                              selId = todos[index]['id'];
+                              setState(() {});
+                            },
                             icon: Icon(Icons.edit),
                           ),
                           IconButton(
