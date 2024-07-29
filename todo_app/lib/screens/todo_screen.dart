@@ -51,6 +51,7 @@ class _TodoScreenState extends State<TodoScreen> {
                           'title': txtTitle.text,
                           "isCompleted": todo['isCompleted']
                         });
+                        selId = -1;
                       }
                     }
 
