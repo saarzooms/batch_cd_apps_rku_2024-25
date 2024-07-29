@@ -8,6 +8,8 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
+  List todos = [];
+  TextEditingController txtTitle = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,10 +22,26 @@ class _TodoScreenState extends State<TodoScreen> {
           Row(
             children: [
               Expanded(
-                child: TextField(),
+                child: TextField(
+                  controller: txtTitle,
+                  decoration: InputDecoration(
+                    hintText: 'Enter title of task',
+                  ),
+                ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  //logic to add/update items in todos
+                  if (txtTitle.text.isNotEmpty) {
+                    todos.add({
+                      "id": todos.length + 1,
+                      'title': txtTitle.text,
+                      "isCompleted": false
+                    });
+                    txtTitle.clear();
+                    setState(() {});
+                  }
+                },
                 icon: Icon(Icons.add),
               ),
             ],
@@ -31,12 +49,14 @@ class _TodoScreenState extends State<TodoScreen> {
           //section to display tasks
           Expanded(
             child: ListView.builder(
+              itemCount: todos.length,
               itemBuilder: (context, index) => Card(
                 child: CheckboxListTile(
                     controlAffinity: ListTileControlAffinity.leading,
-                    value: false,
+                    value: todos[index]['isCompleted'],
                     onChanged: (v) {},
-                    title: Text('Task name'),
+                    title: Text(
+                        '${todos[index]['title']} (${todos[index]['id']})'),
                     secondary: SizedBox(
                       width: 80,
                       child: Row(
@@ -46,7 +66,12 @@ class _TodoScreenState extends State<TodoScreen> {
                             icon: Icon(Icons.edit),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              //logic to delete the item from list
+                              todos.removeWhere((element) =>
+                                  element['id'] == todos[index]['id']);
+                              setState(() {});
+                            },
                             icon: Icon(Icons.delete),
                           ),
                         ],
