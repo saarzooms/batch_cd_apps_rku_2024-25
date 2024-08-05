@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:ecom_app/screen/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'dashboard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,12 +17,22 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 2), () {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => LoginPage(),
-        ),
-      );
+    Timer(Duration(seconds: 2), () async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      String unm = await prefs.getString('username') ?? '';
+      if (unm == '') {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ),
+        );
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DashboardScreen(),
+          ),
+        );
+      }
     });
   }
 
