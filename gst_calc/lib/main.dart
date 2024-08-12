@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'screens/color_screen.dart';
 import 'screens/gst_screen.dart';
 
 void main() {
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: GSTScreen(),
+      home: ColorScreen(),
     );
   }
 }

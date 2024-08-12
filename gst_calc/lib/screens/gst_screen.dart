@@ -40,9 +40,9 @@ class _GSTScreenState extends State<GSTScreen> {
           decoration:
               InputDecoration(hintText: 'Enter GST %', labelText: 'GST%'),
         ),
-        Text('CGST:$cgst'),
-        Text('SGST:$sgst'),
-        Text('IGST:$igst'),
+        Text('CGST:${cgst.toStringAsFixed(2)}'),
+        Text('SGST:${sgst.toStringAsFixed(2)}'),
+        Text('IGST:${igst.toStringAsFixed(2)}'),
         TextField(
           controller: txtTotalAmnt,
           decoration: InputDecoration(
@@ -50,14 +50,27 @@ class _GSTScreenState extends State<GSTScreen> {
         ),
         ElevatedButton(
           onPressed: () {
-            if (txtAmnt.text.isNotEmpty && txtPer.text.isNotEmpty) {
-              igst =
-                  double.parse(txtAmnt.text) * double.parse(txtPer.text) * 0.01;
-              cgst = igst * 0.5;
-              sgst = igst * 0.5;
-              txtTotalAmnt.text =
-                  (double.parse(txtAmnt.text) + igst).toString();
+            if (isRev) {
+              if (txtTotalAmnt.text.isNotEmpty && txtPer.text.isNotEmpty) {
+                double amnt = double.parse(txtTotalAmnt.text) /
+                    (1 + (double.parse(txtPer.text) * 0.01));
+                igst = amnt * double.parse(txtPer.text) * 0.01;
+                cgst = igst * 0.5;
+                sgst = igst * 0.5;
+                txtAmnt.text = (amnt).toStringAsFixed(2);
+              }
+            } else {
+              if (txtAmnt.text.isNotEmpty && txtPer.text.isNotEmpty) {
+                igst = double.parse(txtAmnt.text) *
+                    double.parse(txtPer.text) *
+                    0.01;
+                cgst = igst * 0.5;
+                sgst = igst * 0.5;
+                txtTotalAmnt.text =
+                    (double.parse(txtAmnt.text) + igst).toString();
+              }
             }
+
             setState(() {});
           },
           child: Text('Calculate'),
