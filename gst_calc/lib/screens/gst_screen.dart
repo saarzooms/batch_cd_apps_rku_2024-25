@@ -14,6 +14,7 @@ class _GSTScreenState extends State<GSTScreen> {
   var igst = 0.0;
   var sgst = 0.0;
   var cgst = 0.0;
+  bool isRev = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +22,14 @@ class _GSTScreenState extends State<GSTScreen> {
         title: Text('GST Calc'),
       ),
       body: Column(children: [
+        SwitchListTile(
+          value: isRev,
+          onChanged: (v) {
+            isRev = v;
+            setState(() {});
+          },
+          title: Text('isReverse'),
+        ),
         TextField(
           controller: txtAmnt,
           decoration:
@@ -40,7 +49,17 @@ class _GSTScreenState extends State<GSTScreen> {
               hintText: 'Enter Total Amount', labelText: 'Total Amount'),
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            if (txtAmnt.text.isNotEmpty && txtPer.text.isNotEmpty) {
+              igst =
+                  double.parse(txtAmnt.text) * double.parse(txtPer.text) * 0.01;
+              cgst = igst * 0.5;
+              sgst = igst * 0.5;
+              txtTotalAmnt.text =
+                  (double.parse(txtAmnt.text) + igst).toString();
+            }
+            setState(() {});
+          },
           child: Text('Calculate'),
         ),
       ]),
