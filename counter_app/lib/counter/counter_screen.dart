@@ -1,7 +1,10 @@
+import 'package:counter_app/counter/counter_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CounterScreen extends StatelessWidget {
-  const CounterScreen({super.key});
+  CounterScreen({super.key});
+  CounterController controller = Get.put(CounterController());
 
   @override
   Widget build(BuildContext context) {
@@ -10,12 +13,20 @@ class CounterScreen extends StatelessWidget {
           body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('0', style: TextStyle(fontSize: 60)),
+          GetBuilder(
+            init: CounterController(),
+            builder: (controller) {
+              return Text(controller.count.toString(),
+                  style: TextStyle(fontSize: 60));
+            },
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.increment();
+                },
                 icon: Icon(Icons.add),
               ),
               IconButton(
