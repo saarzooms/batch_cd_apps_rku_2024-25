@@ -1,19 +1,22 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CounterController extends GetxController {
-  int count = 0;
+  RxInt count = 0.obs;
   increment() {
-    count++;
-    update();
+    count.value++;
   }
 
   decrement() {
-    count -= 1;
-    update();
+    if (count.value > 0)
+      count.value -= 1;
+    else
+      Get.snackbar('Underflow', '-ve number not allowed',
+          backgroundColor: Colors.red);
   }
 
   reset() {
-    count = 0;
+    count.value = 0;
     update();
   }
 

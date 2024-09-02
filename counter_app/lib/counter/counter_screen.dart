@@ -13,10 +13,10 @@ class CounterScreen extends StatelessWidget {
           body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          GetBuilder(
+          GetX(
             init: CounterController(),
             builder: (controller) {
-              return Text(controller.count.toString(),
+              return Text(controller.count.value.toString(),
                   style: TextStyle(fontSize: 60));
             },
           ),
@@ -30,11 +30,15 @@ class CounterScreen extends StatelessWidget {
                 icon: Icon(Icons.add),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.decrement();
+                },
                 icon: Icon(Icons.remove),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.reset();
+                },
                 icon: Icon(Icons.refresh),
               ),
             ],
