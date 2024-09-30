@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quotes_app/quotes/screens/quote_list_page.dart';
 
 import '../controllers/quotes_controller.dart';
 
@@ -12,6 +13,13 @@ class QuotePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Quotes Screen'),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Get.to(QuoteListPage());
+              },
+              icon: Icon(Icons.menu))
+        ],
       ),
       body: Obx(() {
         return controller.isLoading.value

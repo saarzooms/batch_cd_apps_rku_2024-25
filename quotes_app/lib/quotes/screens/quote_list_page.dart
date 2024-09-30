@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../controllers/quotes_controller.dart';
 
 class QuoteListPage extends StatelessWidget {
-  const QuoteListPage({super.key});
-
+  QuoteListPage({super.key});
+  QuotesController controller = Get.find<QuotesController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,16 +13,18 @@ class QuoteListPage extends StatelessWidget {
           title: Text('Quotes Screen'),
           centerTitle: true,
         ),
-        body: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) => ListTile(
-            title: Text(
-              'Quote',
+        body: Obx(() {
+          return ListView.builder(
+            itemCount: controller.quotes.length,
+            itemBuilder: (context, index) => ListTile(
+              title: Text(
+                controller.quotes[index].q,
+              ),
+              subtitle: Text(
+                controller.quotes[index].a,
+              ),
             ),
-            subtitle: Text(
-              'Author',
-            ),
-          ),
-        ));
+          );
+        }));
   }
 }
