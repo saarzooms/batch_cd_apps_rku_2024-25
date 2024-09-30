@@ -3,6 +3,10 @@ import 'package:get/get.dart';
 
 class CounterController extends GetxController {
   RxInt count = 0.obs;
+  var limit = 0.obs;
+  var price = 0.obs;
+  TextEditingController txtLimit = TextEditingController();
+  TextEditingController txtPrice = TextEditingController();
   increment() {
     count.value++;
   }
@@ -20,8 +24,11 @@ class CounterController extends GetxController {
     update();
   }
 
-  /*
-  y=x++;
-  y=++x;
-   */
+  updateSettings() {
+    try {
+      limit.value = int.parse(txtLimit.text);
+      price.value = int.parse(txtPrice.text);
+      Get.snackbar("Success", "updated Successfully settings");
+    } catch (e) {}
+  }
 }
