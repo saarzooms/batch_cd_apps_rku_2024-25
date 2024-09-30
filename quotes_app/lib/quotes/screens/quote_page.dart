@@ -13,19 +13,23 @@ class QuotePage extends StatelessWidget {
         title: Text('Quotes Screen'),
         centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Quote',
-            style: TextStyle(fontSize: 40),
-          ),
-          Text(
-            'Author',
-            style: TextStyle(fontSize: 20),
-          ),
-        ],
-      ),
+      body: Obx(() {
+        return controller.isLoading.value
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    controller.quote.value.q,
+                    style: TextStyle(fontSize: 40),
+                  ),
+                  Text(
+                    controller.quote.value.a,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              );
+      }),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
             controller.fetchQuote();
